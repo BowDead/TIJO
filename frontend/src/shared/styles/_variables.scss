@@ -1,0 +1,45 @@
+// Tła
+$color-bg: #0e1012;
+$color-sidebar: #14171a;
+$color-surface: #181c20;
+$color-muted-bg: #20252a;
+
+// Obramowania
+$color-divider: #23282d;
+$color-border: #2a3036;
+$color-border-strong: #333a41;
+
+// Tekst
+$color-text: #e7e9ec;
+$color-text-soft: #c9ced4;
+$color-muted-text: #9aa3ad;
+$color-faint-text: #6e7781;
+
+// Akcent
+$color-primary: #ff7a1a;
+$color-primary-hover: #ff9142;
+$color-primary-text: #ffb27a;
+$color-primary-bg: rgba(#ff7a1a, 0.12);
+$color-on-primary: #16110b;
+
+// Statusy
+$color-success: #5fd08a;
+$color-success-bg: rgba(#5fd08a, 0.1);
+$color-danger: #ff6b6b;
+$color-danger-bg: rgba(#ff6b6b, 0.1);
+
+// Odstępy
+$space-xs: 0.5rem;
+$space-sm: 0.875rem;
+$space-md: 1rem;
+$space-lg: 1.5rem;
+$space-xl: 2rem;
+
+// Zaokrąglenia
+$radius: 4px;
+$radius-sm: 2px;
+
+// Layout
+$sidebar-width: 288px;
+$breakpoint-sidebar: 860px;
+$content-max-width: 1040px;
