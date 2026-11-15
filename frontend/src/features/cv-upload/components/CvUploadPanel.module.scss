@@ -1,0 +1,26 @@
+@use "@/shared/styles/variables" as *;
+
+.upload {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xs;
+}
+
+.info,
+.error {
+  margin: 0;
+  padding: 0.375rem 0.625rem;
+  border-radius: $radius;
+  font-size: 0.8rem;
+}
+
+.info {
+  background: $color-muted-bg;
+  color: $color-muted-text;
+}
+
+.error {
+  border: 1px solid rgba($color-danger, 0.3);
+  background: $color-danger-bg;
+  color: $color-danger;
+}
