@@ -1,0 +1,138 @@
+{
+  "app": {
+    "yourCv": "Twoje CV",
+    "title": "Analizator CV",
+    "description": "Wgraj CV, sprawdź anonimizację danych osobowych i ocenę zgodności z systemami ATS.",
+    "readingTitle": "Odczytywanie pliku…",
+    "emptyTitle": "Nie wgrano jeszcze CV",
+    "emptyText": "Wgraj plik PDF lub DOCX w panelu po lewej. Tutaj pojawi się ocena ATS, podgląd i tekst po anonimizacji."
+  },
+  "cvUpload": {
+    "dropTitle": "Przeciągnij tutaj plik CV",
+    "dropHint": "PDF lub DOCX, maks. {{maxMb}} MB",
+    "chooseFile": "Wybierz plik",
+    "reading": "Odczytywanie „{{fileName}}”…",
+    "changeFile": "Zmień plik",
+    "pages": "{{pages}} str.",
+    "words_one": "{{count}} słowo",
+    "words_few": "{{count}} słowa",
+    "words_many": "{{count}} słów",
+    "words_other": "{{count}} słowa",
+    "previewTitle": "Podgląd CV: {{fileName}}",
+    "anonymized": {
+      "title": "Tekst po anonimizacji",
+      "description": "Kliknij ukryty fragment, aby go odkryć, albo zaznacz tekst, aby go ukryć.",
+      "hidden": "Ukryto: {{list}}",
+      "noneFound": "Nie wykryto danych osobowych.",
+      "hideSelection": "Ukryj zaznaczenie",
+      "hideEverywhere": "Ukryj wszędzie",
+      "restore": "Przywróć",
+      "download": "Pobierz .txt",
+      "labels": {
+        "fullName": "imię i nazwisko",
+        "email": "e-mail",
+        "phone": "telefon",
+        "pesel": "PESEL",
+        "githubLink": "link do GitHuba",
+        "linkedinLink": "link do LinkedIn",
+        "link": "inne linki",
+        "address": "adres",
+        "postalCode": "kod pocztowy",
+        "birthDate": "data urodzenia",
+        "manual": "ukryte ręcznie"
+      }
+    }
+  },
+  "ats": {
+    "scoreGeneral": "Ogólna ocena zgodności CV z systemami ATS.",
+    "scoreWithMatch": "Ocena ogólna {{general}}/100 (70%) i dopasowanie do ogłoszenia {{match}}% (30%).",
+    "rating": {
+      "excellent": "Bardzo dobre CV",
+      "good": "Dobre CV",
+      "fair": "Przeciętne CV",
+      "poor": "Słabe CV"
+    },
+    "criteria": {
+      "contact": "Dane kontaktowe",
+      "sections": "Sekcje",
+      "length": "Długość",
+      "skills": "Umiejętności",
+      "achievements": "Mierzalne osiągnięcia",
+      "actionVerbs": "Czasowniki działania",
+      "structure": "Struktura"
+    },
+    "items": {
+      "email": "e-mail",
+      "phone": "telefon",
+      "profileLink": "LinkedIn/GitHub",
+      "summary": "podsumowanie",
+      "experience": "doświadczenie",
+      "education": "wykształcenie",
+      "skills": "umiejętności",
+      "languages": "języki",
+      "projects": "projekty",
+      "certifications": "certyfikaty"
+    },
+    "details": {
+      "found": "Znaleziono: {{found}}. Brak: {{missing}}.",
+      "length": "Liczba słów: {{words}} (zalecane 350–900).",
+      "skills": "Rozpoznane umiejętności: {{count}}.",
+      "achievements": "Linie z liczbami: {{count}}.",
+      "actionVerbs": "Rozpoznane czasowniki: {{count}} ({{examples}}).",
+      "structure": "Punktory: {{bullets}}, okresy dat: {{dateRanges}}, za długie akapity: {{longLines}}."
+    },
+    "tips": {
+      "ADD_EMAIL": "Dodaj adres e-mail.",
+      "ADD_PHONE": "Dodaj numer telefonu.",
+      "ADD_PROFILE_LINK": "Dodaj link do LinkedIn lub GitHuba.",
+      "ADD_EXPERIENCE_SECTION": "Dodaj sekcję „Doświadczenie”.",
+      "ADD_EDUCATION_SECTION": "Dodaj sekcję „Wykształcenie”.",
+      "ADD_SKILLS_SECTION": "Dodaj sekcję „Umiejętności”.",
+      "ADD_SUMMARY_SECTION": "Dodaj krótkie podsumowanie zawodowe.",
+      "ADD_LANGUAGES_SECTION": "Dodaj sekcję „Języki”.",
+      "CV_TOO_SHORT": "CV jest krótkie — rozwiń opis doświadczenia i projektów.",
+      "CV_TOO_LONG": "CV jest długie — skróć je do najważniejszych informacji.",
+      "ADD_MORE_SKILLS": "Wymień więcej konkretnych technologii i narzędzi.",
+      "ADD_NUMBERS": "Opisz efekty liczbami (np. „skrócenie czasu o 30%”).",
+      "USE_ACTION_VERBS": "Zaczynaj punkty od czasowników (wdrożyłem, zoptymalizowałem…).",
+      "USE_BULLETS": "Używaj punktorów w opisie obowiązków.",
+      "ADD_DATES": "Podaj okresy zatrudnienia i nauki (np. 03.2021 – obecnie).",
+      "SPLIT_LONG_PARAGRAPHS": "Podziel długie akapity na krótsze punkty."
+    },
+    "match": {
+      "title": "Dopasowanie do ogłoszenia",
+      "matched": "Masz w CV:",
+      "missing": "Brakuje w CV:",
+      "noKeywords": "W ogłoszeniu nie rozpoznano technologii ze słownika."
+    },
+    "skillsTitle": "Rozpoznane umiejętności",
+    "noSkills": "Nie rozpoznano umiejętności ze słownika.",
+    "jobDescription": {
+      "label": "Ogłoszenie (opcjonalnie)",
+      "placeholder": "Wklej treść ogłoszenia, aby sprawdzić dopasowanie słów kluczowych.",
+      "submit": "Oceń dopasowanie",
+      "scoring": "Ocenianie…"
+    }
+  },
+  "errors": {
+    "FILE_MISSING": "Nie przesłano pliku.",
+    "FILE_EMPTY": "Plik jest pusty.",
+    "FILE_TOO_LARGE": "Plik jest za duży (limit to {{maxMb}} MB).",
+    "FILE_UNSUPPORTED": "Nieobsługiwany format pliku. Wybierz PDF lub DOCX.",
+    "FILE_NOT_PDF": "Plik nie wygląda na prawidłowy PDF (niezgodna zawartość).",
+    "FILE_NOT_DOCX": "Plik nie wygląda na prawidłowy DOCX (niezgodna zawartość).",
+    "FILE_UNREADABLE": "Nie udało się odczytać pliku. Jest uszkodzony lub ma nieprawidłowy format.",
+    "FILE_NO_TEXT": "W pliku nie znaleziono tekstu. Jeśli to skan lub zdjęcie, wyeksportuj CV jako PDF z tekstem.",
+    "UPLOAD_INVALID": "Nieprawidłowe przesłanie pliku. Wyślij jeden plik w polu „file”.",
+    "CV_TEXT_MISSING": "Brak tekstu CV.",
+    "CV_TEXT_TOO_LONG": "Tekst CV jest za długi.",
+    "JOB_DESCRIPTION_TOO_LONG": "Ogłoszenie jest za długie (limit {{max}} znaków).",
+    "INVALID_INPUT": "Nieprawidłowe dane.",
+    "PAYLOAD_TOO_LARGE": "Przesłane dane są za duże.",
+    "NOT_FOUND": "Nie znaleziono: {{method}} {{path}}",
+    "INTERNAL_ERROR": "Wewnętrzny błąd serwera.",
+    "NETWORK_ERROR": "Brak połączenia z serwerem.",
+    "HTTP_ERROR": "Błąd HTTP {{status}}.",
+    "UNKNOWN": "Wystąpił nieoczekiwany błąd."
+  }
+}
