@@ -1,0 +1,30 @@
+import multer from "multer";
+import { HttpError } from "../errors/HttpError.js";
+
+export const MAX_FILE_SIZE_MB = 10;
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: MAX_FILE_SIZE_MB * 1024 * 1024,
+    files: 1,
+  },
+  defParamCharset: "utf8",
+}).single("file");
+
+export function uploadCvFile(req, res, next) {
+  upload(req, res, (err) => {
+    if (!err) {
+      return next();
+    }
+    if (err instanceof multer.MulterError) {
+      if (err.code === "LIMIT_FILE_SIZE") {
+        return next(
+          new HttpError(413, "FILE_TOO_LARGE", { maxMb: MAX_FILE_SIZE_MB }),
+        );
+      }
+      return next(new HttpError(400, "UPLOAD_INVALID"));
+    }
+    next(err);
+  });
+}
