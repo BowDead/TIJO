@@ -1,0 +1,69 @@
+import { useTranslation } from "react-i18next";
+import { AppLayout } from "@/shared/layout/AppLayout";
+import { PageHeader } from "@/shared/ui/PageHeader";
+import { EmptyState } from "@/shared/ui/EmptyState";
+import {
+  CvAnonymizedText,
+  CvPreview,
+  CvUploadPanel,
+  useAnonymizationReview,
+  useCvUpload,
+} from "@/features/cv-upload";
+import {
+  AtsScorePanel,
+  JobDescriptionForm,
+  useAtsScore,
+} from "@/features/ats-score";
+import styles from "./App.module.scss";
+
+export function App() {
+  const { t } = useTranslation();
+  const cv = useCvUpload();
+  const review = useAnonymizationReview(cv);
+  const ats = useAtsScore(cv);
+
+  return (
+    <AppLayout
+      sidebar={
+        <>
+          <section className={styles.block}>
+            <h2 className={styles.label}>{t("app.yourCv")}</h2>
+            <CvUploadPanel cv={cv} />
+          </section>
+          <JobDescriptionForm
+            disabled={cv.status !== "done"}
+            busy={ats.status === "loading"}
+            onSubmit={ats.rescore}
+          />
+        </>
+      }
+    >
+      <PageHeader title={t("app.title")} description={t("app.description")} />
+
+      {cv.status === "done" && (
+        <>
+          <AtsScorePanel ats={ats} />
+          <div className={styles.split}>
+            <CvPreview
+              kind={cv.result.kind}
+              previewUrl={cv.previewUrl}
+              text={cv.result.text}
+              fileName={cv.file.name}
+            />
+            <CvAnonymizedText review={review} />
+          </div>
+        </>
+      )}
+
+      {cv.status === "uploading" && (
+        <EmptyState busy title={t("app.readingTitle")}>
+          {cv.file.name}
+        </EmptyState>
+      )}
+
+      {(cv.status === "idle" || cv.status === "error") && (
+        <EmptyState title={t("app.emptyTitle")}>{t("app.emptyText")}</EmptyState>
+      )}
+    </AppLayout>
+  );
+}
