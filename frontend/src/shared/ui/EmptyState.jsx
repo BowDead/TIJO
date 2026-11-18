@@ -15,7 +15,7 @@ export function EmptyState({
     >
       {busy && <span className={styles.progress} aria-hidden="true" />}
       <h2 className={styles.title}>{title}</h2>
-      {children && <p className={styles.text}>{children}</p>}
+      {children && <div className={styles.text}>{children}</div>}
       {action}
     </div>
   );

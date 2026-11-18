@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/shared/ui/Button";
 import { ACCEPT_ATTRIBUTE, MAX_FILE_SIZE_MB } from "../constants";
 import styles from "./CvDropzone.module.scss";
 
@@ -45,32 +44,46 @@ export function CvDropzone({ onFileSelected, disabled = false }) {
     .join(" ");
 
   return (
-    <div
+    <>
+    <input
+      ref={inputRef}
+      type="file"
+      accept={ACCEPT_ATTRIBUTE}
+      onChange={handleInputChange}
+      data-testid="cv-file-input"
+      hidden
+    />
+    <button
+      type="button"
       className={className}
+      aria-disabled={disabled}
+      onClick={() => !disabled && inputRef.current?.click()}
       onDragOver={handleDragOver}
       onDragLeave={() => setIsDragging(false)}
       onDrop={handleDrop}
     >
-      <p className={styles.title}>{t("cvUpload.dropTitle")}</p>
-      <p className={styles.hint}>
-        {t("cvUpload.dropHint", { maxMb: MAX_FILE_SIZE_MB })}
-      </p>
-
-      <Button
-        size="sm"
-        onClick={() => inputRef.current?.click()}
-        disabled={disabled}
+      <svg
+        className={styles.icon}
+        width="28"
+        height="28"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
       >
-        {t("cvUpload.chooseFile")}
-      </Button>
-
-      <input
-        ref={inputRef}
-        type="file"
-        accept={ACCEPT_ATTRIBUTE}
-        onChange={handleInputChange}
-        hidden
-      />
-    </div>
+        <path d="M12 16V4" />
+        <path d="m7 9 5-5 5 5" />
+        <path d="M5 16v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" />
+      </svg>
+      <span className={styles.title}>{t("cvUpload.dropTitle")}</span>
+      <span className={styles.hint}>
+        {t("cvUpload.dropHint", { maxMb: MAX_FILE_SIZE_MB })}
+      </span>
+      <span className={styles.cta}>{t("cvUpload.chooseFile")}</span>
+    </button>
+    </>
   );
 }

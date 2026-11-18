@@ -5,7 +5,21 @@
     "description": "Wgraj CV, sprawdź anonimizację danych osobowych i ocenę zgodności z systemami ATS.",
     "readingTitle": "Odczytywanie pliku…",
     "emptyTitle": "Nie wgrano jeszcze CV",
-    "emptyText": "Wgraj plik PDF lub DOCX w panelu po lewej. Tutaj pojawi się ocena ATS, podgląd i tekst po anonimizacji."
+    "emptyText": "Wgraj plik PDF lub DOCX w panelu po lewej. Tekst CV zamienimy na Markdown, ukryjemy dane osobowe i ocenimy zgodność z ATS.",
+    "steps": {
+      "upload": {
+        "title": "Wgraj CV",
+        "text": "PDF lub DOCX — tekst zostanie zamieniony na Markdown."
+      },
+      "review": {
+        "title": "Sprawdź anonimizację",
+        "text": "Odkryj lub ukryj fragmenty i pobierz CV jako .md."
+      },
+      "match": {
+        "title": "Dopasuj do ogłoszenia",
+        "text": "Wklej ogłoszenie, aby zobaczyć brakujące słowa kluczowe."
+      }
+    }
   },
   "cvUpload": {
     "dropTitle": "Przeciągnij tutaj plik CV",
@@ -27,7 +41,6 @@
       "hideSelection": "Ukryj zaznaczenie",
       "hideEverywhere": "Ukryj wszędzie",
       "restore": "Przywróć",
-      "download": "Pobierz .txt",
       "labels": {
         "fullName": "imię i nazwisko",
         "email": "e-mail",
@@ -40,8 +53,19 @@
         "postalCode": "kod pocztowy",
         "birthDate": "data urodzenia",
         "manual": "ukryte ręcznie"
-      }
-    }
+      },
+      "viewEdit": "Edycja",
+      "hiddenLabel": "Ukryte dane"
+    },
+    "preview": {
+      "title": "Podgląd CV",
+      "markdown": "Markdown",
+      "source": "Źródło .md",
+      "original": "Oryginał PDF"
+    },
+    "downloadMd": "Pobierz .md",
+    "copyMd": "Kopiuj .md",
+    "copied": "Skopiowano"
   },
   "ats": {
     "scoreGeneral": "Ogólna ocena zgodności CV z systemami ATS.",
@@ -111,8 +135,16 @@
       "label": "Ogłoszenie (opcjonalnie)",
       "placeholder": "Wklej treść ogłoszenia, aby sprawdzić dopasowanie słów kluczowych.",
       "submit": "Oceń dopasowanie",
-      "scoring": "Ocenianie…"
-    }
+      "scoring": "Ocenianie…",
+      "characters_one": "{{count}} znak",
+      "characters_few": "{{count}} znaki",
+      "characters_many": "{{count}} znaków",
+      "characters_other": "{{count}} znaku",
+      "needCv": "Najpierw wgraj CV."
+    },
+    "title": "Ocena ATS",
+    "tipsTitle": "Co poprawić",
+    "criteriaTitle": "Kryteria"
   },
   "errors": {
     "FILE_MISSING": "Nie przesłano pliku.",

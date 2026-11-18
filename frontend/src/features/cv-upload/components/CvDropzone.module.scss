@@ -5,32 +5,50 @@
   flex-direction: column;
   align-items: center;
   gap: 0.375rem;
-  padding: $space-lg $space-md;
+  width: 100%;
+  padding: 1.75rem $space-md;
   border: 1px dashed $color-border-strong;
   border-radius: $radius;
   background: $color-surface;
+  color: $color-text;
   text-align: center;
+  cursor: pointer;
   transition:
     border-color 0.15s,
     background-color 0.15s;
 
+  &:hover:not(.disabled),
   &.dragging {
     border-color: $color-primary;
     background: $color-primary-bg;
   }
 
   &.disabled {
+    cursor: progress;
     opacity: 0.6;
   }
 }
 
+.icon {
+  color: $color-primary;
+  margin-bottom: 0.25rem;
+}
+
 .title {
-  margin: 0;
   font-weight: 600;
 }
 
 .hint {
-  margin: 0 0 0.375rem;
   color: $color-muted-text;
   font-size: 0.8rem;
+}
+
+.cta {
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: $radius;
+  background: $color-primary;
+  color: $color-on-primary;
+  font-size: 0.85rem;
+  font-weight: 700;
 }
