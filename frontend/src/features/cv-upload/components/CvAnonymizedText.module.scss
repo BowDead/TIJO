@@ -5,17 +5,20 @@
   @include card;
   display: flex;
   flex-direction: column;
+  gap: 0.75rem;
+}
+
+.header,
+.toolbar,
+.controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   gap: $space-xs;
 }
 
 .header,
-.toolbar {
-  display: flex;
-  align-items: center;
-  gap: $space-xs;
-}
-
-.header {
+.controls {
   justify-content: space-between;
 }
 
@@ -25,49 +28,104 @@
 }
 
 .description,
-.summary,
-.note {
+.summary {
   margin: 0;
   color: $color-muted-text;
   font-size: 0.8rem;
 }
 
-.summary {
-  color: $color-text-soft;
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.note {
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.125rem 0.25rem 0.125rem 0.5rem;
+  border: 1px solid rgba($color-primary, 0.25);
+  border-radius: 999px;
+  background: $color-primary-bg;
   color: $color-primary-text;
+  font-size: 0.75rem;
+
+  strong {
+    min-width: 1.25rem;
+    padding: 0 0.3rem;
+    border-radius: 999px;
+    background: rgba($color-primary, 0.2);
+    text-align: center;
+  }
 }
 
 .text {
-  max-height: calc(100vh - 220px);
-  min-height: 300px;
-  overflow: auto;
-  padding: 0.75rem;
-  border: 1px solid $color-divider;
-  border-radius: $radius-sm;
-  background: $color-bg;
+  @include panel-scroll;
+  padding: 1.25rem 1.5rem;
   color: $color-text-soft;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.line {
+  white-space: pre-wrap;
+}
+
+.lineTitle {
+  @include md-title;
+}
+
+.lineHeading {
+  @include md-heading;
+}
+
+.lineItem {
+  @include md-item;
+  white-space: pre-wrap;
+}
+
+.blank {
+  height: 0.5rem;
+}
+
+.source {
+  @include panel-scroll;
+  margin: 0;
+  padding: 1rem 1.25rem;
+  color: $color-text-soft;
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 0.78rem;
   line-height: 1.6;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .hidden,
 .revealed {
   display: inline;
-  padding: 0 0.15rem;
+  padding: 0 0.2rem;
   border: none;
   border-radius: $radius-sm;
   font: inherit;
   line-height: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
   cursor: pointer;
 }
 
 .hidden {
   background: $color-primary-bg;
   color: $color-primary-text;
+  font-weight: 600;
+
+  &:hover {
+    background: rgba($color-primary, 0.22);
+  }
 }
 
 .revealed {
