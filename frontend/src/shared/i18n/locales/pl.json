@@ -55,7 +55,8 @@
         "manual": "ukryte ręcznie"
       },
       "viewEdit": "Edycja",
-      "hiddenLabel": "Ukryte dane"
+      "hiddenLabel": "Ukryte dane",
+      "fileSuffix": "-zanonimizowane"
     },
     "preview": {
       "title": "Podgląd CV",
@@ -144,7 +145,8 @@
     },
     "title": "Ocena ATS",
     "tipsTitle": "Co poprawić",
-    "criteriaTitle": "Kryteria"
+    "criteriaTitle": "Kryteria",
+    "loading": "Obliczanie oceny ATS…"
   },
   "errors": {
     "FILE_MISSING": "Nie przesłano pliku.",
