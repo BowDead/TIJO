@@ -16,15 +16,17 @@ $color-muted-text: #9aa3ad;
 $color-faint-text: #6e7781;
 
 // Akcent
-$color-primary: #ff7a1a;
-$color-primary-hover: #ff9142;
-$color-primary-text: #ffb27a;
-$color-primary-bg: rgba(#ff7a1a, 0.12);
-$color-on-primary: #16110b;
+$color-primary: #22c55e;
+$color-primary-hover: #4ade80;
+$color-primary-text: #86efac;
+$color-primary-bg: rgba(#22c55e, 0.12);
+$color-on-primary: #052e16;
 
 // Statusy
 $color-success: #5fd08a;
 $color-success-bg: rgba(#5fd08a, 0.1);
+$color-warning: #f2b544;
+$color-warning-bg: rgba(#f2b544, 0.12);
 $color-danger: #ff6b6b;
 $color-danger-bg: rgba(#ff6b6b, 0.1);
 
@@ -42,4 +44,4 @@ $radius-sm: 2px;
 // Layout
 $sidebar-width: 288px;
 $breakpoint-sidebar: 860px;
-$content-max-width: 1040px;
+$content-max-width: 1280px;

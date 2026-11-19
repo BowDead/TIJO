@@ -1,19 +1,45 @@
 @use "@/shared/styles/variables" as *;
+@use "@/shared/styles/mixins" as *;
 
-.pdf,
-.text {
-  display: block;
-  width: 100%;
-  height: calc(100vh - 220px);
-  min-height: 520px;
-  border: 1px solid $color-border;
-  border-radius: $radius;
-  background: $color-surface;
+.card {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.text {
-  overflow-y: auto;
-  padding: $space-lg;
-  white-space: pre-wrap; // zachowuje akapity i podziały linii z tekstu
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-xs;
+}
+
+.title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.body {
+  @include panel-scroll;
+}
+
+.source {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  color: $color-text-soft;
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 0.78rem;
   line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.pdf {
+  display: block;
+  width: 100%;
+  height: calc(100vh - 210px);
+  min-height: 520px;
+  border: none;
+  background: $color-surface;
 }

@@ -20,14 +20,20 @@ export function JobDescriptionForm({ disabled, busy, onSubmit }) {
       <textarea
         id="job-description"
         className={styles.textarea}
-        rows={6}
+        rows={7}
         value={text}
         placeholder={t("ats.jobDescription.placeholder")}
         onChange={(event) => setText(event.target.value)}
       />
-      <Button type="submit" size="sm" disabled={disabled || busy}>
-        {busy ? t("ats.jobDescription.scoring") : t("ats.jobDescription.submit")}
-      </Button>
+      <div className={styles.formFooter}>
+        <span className={styles.counter}>
+          {t("ats.jobDescription.characters", { count: text.length })}
+        </span>
+        <Button type="submit" size="sm" disabled={disabled || busy}>
+          {busy ? t("ats.jobDescription.scoring") : t("ats.jobDescription.submit")}
+        </Button>
+      </div>
+      {disabled && <p className={styles.hint}>{t("ats.jobDescription.needCv")}</p>}
     </form>
   );
 }

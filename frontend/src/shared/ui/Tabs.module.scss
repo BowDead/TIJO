@@ -1,0 +1,33 @@
+@use "@/shared/styles/variables" as *;
+
+.tabs {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: $radius;
+  background: $color-bg;
+  border: 1px solid $color-divider;
+}
+
+.tab {
+  padding: 0.3rem 0.75rem;
+  border: none;
+  border-radius: $radius-sm;
+  background: transparent;
+  color: $color-muted-text;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+
+  &:hover {
+    color: $color-text;
+  }
+
+  &[aria-selected="true"] {
+    background: $color-muted-bg;
+    color: $color-text;
+  }
+}

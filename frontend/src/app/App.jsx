@@ -16,14 +16,18 @@ import {
 } from "@/features/ats-score";
 import styles from "./App.module.scss";
 
+const STEPS = ["upload", "review", "match"];
+
 export function App() {
   const { t } = useTranslation();
   const cv = useCvUpload();
-  const review = useAnonymizationReview(cv);
-  const ats = useAtsScore(cv);
+  const cvResult = cv.status === "done" ? cv.result : null;
+  const review = useAnonymizationReview(cvResult);
+  const ats = useAtsScore(cvResult);
 
   return (
     <AppLayout
+      brand={t("app.title")}
       sidebar={
         <>
           <section className={styles.block}>
@@ -50,7 +54,7 @@ export function App() {
               text={cv.result.text}
               fileName={cv.file.name}
             />
-            <CvAnonymizedText review={review} />
+            <CvAnonymizedText review={review} fileName={cv.file.name} />
           </div>
         </>
       )}
@@ -62,7 +66,22 @@ export function App() {
       )}
 
       {(cv.status === "idle" || cv.status === "error") && (
-        <EmptyState title={t("app.emptyTitle")}>{t("app.emptyText")}</EmptyState>
+        <EmptyState title={t("app.emptyTitle")}>
+          {t("app.emptyText")}
+          <ol className={styles.steps}>
+            {STEPS.map((step, index) => (
+              <li key={step} className={styles.step}>
+                <span className={styles.stepNumber}>{index + 1}</span>
+                <span>
+                  <strong>{t(`app.steps.${step}.title`)}</strong>
+                  <span className={styles.stepText}>
+                    {t(`app.steps.${step}.text`)}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ol>
+        </EmptyState>
       )}
     </AppLayout>
   );

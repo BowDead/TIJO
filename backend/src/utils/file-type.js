@@ -1,7 +1,10 @@
 import path from "node:path";
-import { HttpError } from "../errors/HttpError.js";
+import {
+  InvalidInputError,
+  UnsupportedFileTypeError,
+} from "../errors/domain-errors.js";
 
-// Sygnatury Plików PDF oraz DOCX
+// Sygnatury plików PDF oraz DOCX
 const PDF_SIGNATURE = "%PDF";
 const ZIP_SIGNATURES = [
   Buffer.from([0x50, 0x4b, 0x03, 0x04]),
@@ -13,7 +16,7 @@ export function detectCvKind(fileName, buffer) {
   const extension = path.extname(fileName).toLowerCase();
   if (extension === ".pdf") {
     if (!buffer.subarray(0, 1024).includes(PDF_SIGNATURE)) {
-      throw new HttpError(400, "FILE_NOT_PDF");
+      throw new InvalidInputError("FILE_NOT_PDF");
     }
     return "pdf";
   }
@@ -21,9 +24,9 @@ export function detectCvKind(fileName, buffer) {
   if (extension === ".docx") {
     const head = buffer.subarray(0, 4);
     if (!ZIP_SIGNATURES.some((signature) => head.equals(signature))) {
-      throw new HttpError(400, "FILE_NOT_DOCX");
+      throw new InvalidInputError("FILE_NOT_DOCX");
     }
     return "docx";
   }
-  throw new HttpError(415, "FILE_UNSUPPORTED");
+  throw new UnsupportedFileTypeError("FILE_UNSUPPORTED");
 }

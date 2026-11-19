@@ -1,62 +1,40 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/shared/ui/Button";
+import { Tabs } from "@/shared/ui/Tabs";
+import { useCopyToClipboard } from "@/shared/hooks/useCopyToClipboard";
+import { downloadFile, markdownFileName } from "@/shared/utils/download";
+import { toMarkdown } from "../utils/cvMarkdown";
+import { readTextSelection } from "../utils/textSelection";
+import { AnonymizedTextLines } from "./AnonymizedTextLines";
+import { HiddenDataSummary } from "./HiddenDataSummary";
 import styles from "./CvAnonymizedText.module.scss";
 
-function describeHidden(counts, t) {
-  return Object.entries(counts)
-    .map(
-      ([type, count]) =>
-        `${t(`cvUpload.anonymized.labels.${type}`, { defaultValue: type })} (${count})`,
-    )
-    .join(", ");
-}
-
-function readSelection(container) {
-  const selection = window.getSelection();
-  if (!selection || selection.isCollapsed || selection.rangeCount === 0) {
-    return null;
-  }
-
-  const range = selection.getRangeAt(0);
-  const position = (node, offset) => {
-    const span = node.parentElement?.closest("[data-start]");
-    if (!span || !container.contains(span)) return null;
-    return Number(span.dataset.start) + offset;
-  };
-
-  const start = position(range.startContainer, range.startOffset);
-  const end = position(range.endContainer, range.endOffset);
-  return start !== null && end !== null && start < end ? { start, end } : null;
-}
-
-function downloadText(text) {
-  const url = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "cv-zanonimizowane.txt";
-  link.click();
-  URL.revokeObjectURL(url);
-}
-
-export function CvAnonymizedText({ review }) {
+export function CvAnonymizedText({ review, fileName }) {
   const { t } = useTranslation();
   const textRef = useRef(null);
   const [selection, setSelection] = useState(null);
-  const hidden = describeHidden(review.counts, t);
+  const [view, setView] = useState("edit");
+  const { copied, copy } = useCopyToClipboard();
+  const markdown = useMemo(() => toMarkdown(review.text), [review.text]);
 
   function updateSelection() {
-    setSelection(readSelection(textRef.current));
+    setSelection(readTextSelection(textRef.current));
   }
 
   function hideSelection(everywhere) {
-    if (everywhere) {
-      review.hideEverywhere(selection.start, selection.end);
-    } else {
-      review.hide(selection.start, selection.end);
-    }
+    const hide = everywhere ? review.hideEverywhere : review.hide;
+    hide(selection.start, selection.end);
     setSelection(null);
     window.getSelection()?.removeAllRanges();
+  }
+
+  function downloadMarkdown() {
+    downloadFile(
+      markdown,
+      markdownFileName(fileName, t("cvUpload.anonymized.fileSuffix")),
+      "text/markdown",
+    );
   }
 
   return (
@@ -69,66 +47,61 @@ export function CvAnonymizedText({ review }) {
               {t("cvUpload.anonymized.restore")}
             </Button>
           )}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => downloadText(review.text)}
-          >
-            {t("cvUpload.anonymized.download")}
+          <Button variant="ghost" size="sm" onClick={() => copy(markdown)}>
+            {copied ? t("cvUpload.copied") : t("cvUpload.copyMd")}
+          </Button>
+          <Button variant="ghost" size="sm" onClick={downloadMarkdown}>
+            {t("cvUpload.downloadMd")}
           </Button>
         </div>
       </div>
-      <p className={styles.description}>
-        {t("cvUpload.anonymized.description")}
-      </p>
-      <p className={styles.summary}>
-        {hidden
-          ? t("cvUpload.anonymized.hidden", { list: hidden })
-          : t("cvUpload.anonymized.noneFound")}
-      </p>
-      <div className={styles.toolbar}>
-        <Button
-          size="sm"
-          disabled={!selection}
-          onClick={() => hideSelection(false)}
-        >
-          {t("cvUpload.anonymized.hideSelection")}
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          disabled={!selection}
-          onClick={() => hideSelection(true)}
-        >
-          {t("cvUpload.anonymized.hideEverywhere")}
-        </Button>
-      </div>
 
-      <div
-        ref={textRef}
-        className={styles.text}
-        onMouseUp={updateSelection}
-        onKeyUp={updateSelection}
-      >
-        {review.segments.map((segment, index) =>
-          segment.label ? (
-            <button
-              key={segment.start}
-              type="button"
-              className={segment.hidden ? styles.hidden : styles.revealed}
-              title={segment.hidden ? segment.text : segment.label}
-              aria-pressed={segment.hidden}
-              onClick={() => review.toggle(index)}
+      <HiddenDataSummary counts={review.counts} />
+
+      <div className={styles.controls}>
+        <Tabs
+          tabs={[
+            { id: "edit", label: t("cvUpload.anonymized.viewEdit") },
+            { id: "source", label: t("cvUpload.preview.source") },
+          ]}
+          value={view}
+          onChange={setView}
+          label={t("cvUpload.anonymized.title")}
+        />
+        {view === "edit" && (
+          <div className={styles.toolbar}>
+            <Button size="sm" disabled={!selection} onClick={() => hideSelection(false)}>
+              {t("cvUpload.anonymized.hideSelection")}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              disabled={!selection}
+              onClick={() => hideSelection(true)}
             >
-              {segment.hidden ? segment.label : segment.text}
-            </button>
-          ) : (
-            <span key={segment.start} data-start={segment.start}>
-              {segment.text}
-            </span>
-          ),
+              {t("cvUpload.anonymized.hideEverywhere")}
+            </Button>
+          </div>
         )}
       </div>
+
+      {view === "edit" ? (
+        <>
+          <p className={styles.description}>
+            {t("cvUpload.anonymized.description")}
+          </p>
+          <AnonymizedTextLines
+            containerRef={textRef}
+            segments={review.segments}
+            onToggle={review.toggle}
+            onSelectionChange={updateSelection}
+          />
+        </>
+      ) : (
+        <pre className={styles.source} data-testid="anonymized-markdown">
+          {markdown}
+        </pre>
+      )}
     </section>
   );
 }

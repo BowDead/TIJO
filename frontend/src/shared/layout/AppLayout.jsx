@@ -1,6 +1,6 @@
 import styles from "./AppLayout.module.scss";
 
-export function AppLayout({ sidebar, footer, children }) {
+export function AppLayout({ brand, sidebar, children }) {
   return (
     <div className={styles.shell}>
       <aside className={styles.sidebar}>
@@ -8,12 +8,10 @@ export function AppLayout({ sidebar, footer, children }) {
           <span className={styles.logo} aria-hidden="true">
             CV
           </span>
-          Analizator CV
+          {brand}
         </div>
 
         {sidebar}
-
-        {footer && <div className={styles.footer}>{footer}</div>}
       </aside>
 
       <main className={styles.main}>
