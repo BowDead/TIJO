@@ -50,15 +50,6 @@
   font-weight: 800;
 }
 
-.footer {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  gap: $space-xs;
-  padding-top: $space-sm;
-  border-top: 1px solid $color-divider;
-}
-
 .main {
   min-width: 0;
   padding: $space-xl 2.5rem 3rem;
