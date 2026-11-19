@@ -8,6 +8,10 @@ export class ApiError extends Error {
   }
 }
 
+export function isAbortError(error) {
+  return error?.name === "AbortError";
+}
+
 export async function request(path, { method = "GET", body, signal } = {}) {
   const isFormData = body instanceof FormData;
 
@@ -23,7 +27,7 @@ export async function request(path, { method = "GET", body, signal } = {}) {
       body: body && !isFormData ? JSON.stringify(body) : body,
     });
   } catch (error) {
-    if (error.name === "AbortError") throw error;
+    if (isAbortError(error)) throw error;
     throw new ApiError(0, "NETWORK_ERROR");
   }
 
