@@ -1,8 +1,10 @@
 import { useCallback, useRef, useState } from "react";
-import { anonymizeCv, parseCv, scoreCv } from "../api/cvApi";
+import { isAbortError } from "@/shared/api/httpClient";
+import { useAbortableRequest } from "@/shared/hooks/useAbortableRequest";
+import { anonymizeCv, parseCv } from "../api/cvApi";
 import { validateCvFile } from "../utils/validateCvFile";
 
-const initialState = {
+const INITIAL_STATE = {
   status: "idle", // idle | uploading | done | error
   file: null,
   previewUrl: null,
@@ -10,70 +12,59 @@ const initialState = {
   error: null,
 };
 
-export function useCvUpload() {
-  const [state, setState] = useState(initialState);
-  const controllerRef = useRef(null);
+function usePreviewUrl() {
   const previewUrlRef = useRef(null);
 
-  const replacePreviewUrl = useCallback((file) => {
+  return useCallback((file) => {
     if (previewUrlRef.current) {
       URL.revokeObjectURL(previewUrlRef.current);
     }
     previewUrlRef.current = file ? URL.createObjectURL(file) : null;
     return previewUrlRef.current;
   }, []);
+}
+
+export function useCvUpload() {
+  const [state, setState] = useState(INITIAL_STATE);
+  const { start, abort } = useAbortableRequest();
+  const replacePreviewUrl = usePreviewUrl();
 
   const upload = useCallback(
     async (file) => {
-      controllerRef.current?.abort();
+      abort();
 
       const validationError = validateCvFile(file);
       if (validationError) {
         replacePreviewUrl(null);
-        setState({
-          ...initialState,
-          status: "error",
-          error: validationError,
-        });
+        setState({ ...INITIAL_STATE, status: "error", error: validationError });
         return;
       }
 
-      const controller = new AbortController();
-      controllerRef.current = controller;
-
+      const signal = start();
       const previewUrl = replacePreviewUrl(file);
-      setState({
-        status: "uploading",
-        file,
-        previewUrl,
-        result: null,
-        error: null,
-      });
+      setState({ ...INITIAL_STATE, status: "uploading", file, previewUrl });
 
       try {
-        const parsed = await parseCv(file, controller.signal);
-        const [{ segments }, ats] = await Promise.all([
-          anonymizeCv(parsed.text, controller.signal),
-          scoreCv(parsed.text, "", controller.signal),
-        ]);
+        const parsed = await parseCv(file, signal);
+        const { segments } = await anonymizeCv(parsed.text, signal);
         setState((prev) => ({
           ...prev,
           status: "done",
-          result: { ...parsed, segments, ats },
+          result: { ...parsed, segments },
         }));
       } catch (error) {
-        if (error.name === "AbortError") return;
+        if (isAbortError(error)) return;
         setState((prev) => ({ ...prev, status: "error", error }));
       }
     },
-    [replacePreviewUrl],
+    [abort, start, replacePreviewUrl],
   );
 
   const reset = useCallback(() => {
-    controllerRef.current?.abort();
+    abort();
     replacePreviewUrl(null);
-    setState(initialState);
-  }, [replacePreviewUrl]);
+    setState(INITIAL_STATE);
+  }, [abort, replacePreviewUrl]);
 
   return { ...state, upload, reset };
 }

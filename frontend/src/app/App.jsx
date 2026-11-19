@@ -21,11 +21,13 @@ const STEPS = ["upload", "review", "match"];
 export function App() {
   const { t } = useTranslation();
   const cv = useCvUpload();
-  const review = useAnonymizationReview(cv);
-  const ats = useAtsScore(cv);
+  const cvResult = cv.status === "done" ? cv.result : null;
+  const review = useAnonymizationReview(cvResult);
+  const ats = useAtsScore(cvResult);
 
   return (
     <AppLayout
+      brand={t("app.title")}
       sidebar={
         <>
           <section className={styles.block}>
