@@ -1,34 +1,52 @@
-import { useRef, useState } from "react";
-import { scoreCv } from "@/features/cv-upload/api/cvApi";
+import { useEffect, useState } from "react";
+import { isAbortError } from "@/shared/api/httpClient";
+import { useAbortableRequest } from "@/shared/hooks/useAbortableRequest";
+import { scoreCv } from "../api/atsApi";
 
-// Wynik z uploadu (bez ogłoszenia) można przeliczyć ponownie z treścią ogłoszenia
-export function useAtsScore(cv) {
-  const [state, setState] = useState({ forResult: null, status: "idle" });
-  const controllerRef = useRef(null);
+const INITIAL_STATE = { forResult: null, status: "idle", data: null, error: null };
 
-  const result = cv.status === "done" ? cv.result : null;
-  const own = result !== null && state.forResult === result;
+// Zwraca stan po zakończeniu żądania albo null, gdy żądanie anulowano
+async function fetchScoreState(result, jobDescription, previousData, signal) {
+  try {
+    const data = await scoreCv(result.text, jobDescription, signal);
+    return { forResult: result, status: "done", data, error: null };
+  } catch (error) {
+    if (isAbortError(error)) return null;
+    return { forResult: result, status: "error", data: previousData, error };
+  }
+}
 
-  async function rescore(jobDescription) {
-    if (!result) return;
-    controllerRef.current?.abort();
-    const controller = new AbortController();
-    controllerRef.current = controller;
+// Ocena liczona jest automatycznie dla każdego nowego CV,
+// a potem można ją przeliczyć z treścią ogłoszenia.
+export function useAtsScore(cvResult) {
+  const [state, setState] = useState(INITIAL_STATE);
+  const { start, abort } = useAbortableRequest();
 
-    setState({ forResult: result, status: "loading", data: own ? state.data : null });
-    try {
-      const data = await scoreCv(result.text, jobDescription, controller.signal);
-      setState({ forResult: result, status: "done", data });
-    } catch (error) {
-      if (error.name === "AbortError") return;
-      setState({ forResult: result, status: "error", error });
-    }
+  useEffect(() => {
+    if (!cvResult) return undefined;
+    fetchScoreState(cvResult, "", null, start()).then((nextState) => {
+      if (nextState) setState(nextState);
+    });
+    return abort;
+  }, [cvResult, start, abort]);
+
+  const isCurrent = cvResult !== null && state.forResult === cvResult;
+  const currentData = isCurrent ? state.data : null;
+
+  function rescore(jobDescription) {
+    if (!cvResult) return;
+    setState({ forResult: cvResult, status: "loading", data: currentData, error: null });
+    fetchScoreState(cvResult, jobDescription, currentData, start()).then(
+      (nextState) => {
+        if (nextState) setState(nextState);
+      },
+    );
   }
 
   return {
-    data: own && state.data ? state.data : (result?.ats ?? null),
-    status: own ? state.status : result ? "done" : "idle",
-    error: own ? state.error : null,
+    data: currentData,
+    status: isCurrent ? state.status : cvResult ? "loading" : "idle",
+    error: isCurrent ? state.error : null,
     rescore,
   };
 }

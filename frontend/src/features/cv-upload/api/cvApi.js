@@ -17,11 +17,3 @@ export function anonymizeCv(text, signal) {
     signal,
   });
 }
-
-export function scoreCv(text, jobDescription, signal) {
-  return request("/cv/ats-score", {
-    method: "POST",
-    body: { text, jobDescription },
-    signal,
-  });
-}

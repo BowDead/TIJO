@@ -9,10 +9,10 @@ import {
   withPositions,
 } from "../utils/anonymization";
 
-export function useAnonymizationReview(cv) {
+export function useAnonymizationReview(cvResult) {
   const [review, setReview] = useState({ result: null, segments: [] });
 
-  const result = cv.status === "done" ? cv.result : null;
+  const result = cvResult ?? null;
   const edited = result !== null && review.result === result;
   const segments = edited
     ? review.segments
