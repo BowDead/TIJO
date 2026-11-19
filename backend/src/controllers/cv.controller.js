@@ -1,5 +1,5 @@
 import { parseCv } from "../services/cv.service.js";
-import { anonymizeCv } from "../services/anonymizer.service.js";
+import { anonymizeCv } from "../services/anonymizer/anonymizer.service.js";
 import { scoreCv } from "../services/ats/ats-score.service.js";
 import { anonymizedCvView, atsScoreView, parsedCvView } from "../views/cv.view.js";
 
